@@ -11,7 +11,13 @@ if let forcedPort = ArgumentParser.getValue(argument: "port"), let number = UInt
     port = number
 }
 
-let server = WebServer(absoluteWorkingDir: workingDir)
+// by default server can save and read only from workingDir folder(without subdirectories)
+var allowSubdirs = false
+if let forcedAllowSubdirs = ArgumentParser.getValue(argument: "allowSubdirs") {
+    allowSubdirs = forcedAllowSubdirs == "true"
+}
+
+let server = WebServer(absoluteWorkingDir: workingDir, allowSubdirs: allowSubdirs)
 server.start(port: port)
 
 dispatchMain()
