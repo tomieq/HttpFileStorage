@@ -52,9 +52,9 @@ public class WebServer {
         }
         if FileManager.default.createFile(atPath: path, contents: Data(request.body)) {
             Logger.v(self.logTag, "Saved file \(filename) as \(path)")
-            return .accepted
+            return .accepted()
         }
-        return .internalServerError
+        return .internalServerError()
     }
 
     private func getFile(request: HttpRequest, responseHeaders: HttpResponseHeaders) -> HttpResponse {
@@ -66,9 +66,9 @@ public class WebServer {
         if FileManager.default.fileExists(atPath: filePath) {
             guard let file = try? filePath.openForReading() else {
                 Logger.e(self.logTag, "Could not open `\(filePath)`")
-                return .notFound
+                return .notFound()
             }
-            let mimeType = filePath.mimeType()
+            let mimeType = filePath.mimeType
             responseHeaders.addHeader("Content-Type", mimeType)
 
             if let attr = try? FileManager.default.attributesOfItem(atPath: filePath),
@@ -82,7 +82,7 @@ public class WebServer {
             })
         }
         Logger.e(self.logTag, "File `\(filePath)` doesn't exist")
-        return .notFound
+        return .notFound()
     }
 
     private func removeFile(request: HttpRequest, responseHeaders: HttpResponseHeaders) -> HttpResponse {
@@ -95,21 +95,21 @@ public class WebServer {
             do {
                 try FileManager.default.removeItem(atPath: filePath)
                 Logger.v(self.logTag, "Removed file \(filePath)")
-                return .accepted
+                return .accepted()
             } catch {
                 Logger.e(self.logTag, "Delete error: \(error)")
-                return .internalServerError
+                return .internalServerError()
             }
         }
         Logger.e(self.logTag, "File `\(filePath)` doesn't exist")
-        return .notFound
+        return .notFound()
     }
 
     private func initEndpoints() {
         // url: http://[server]:[port]/{filename}
 
         self.server.middleware.append { [unowned self] request, responseHeaders in
-            Logger.v(self.logTag, "Incoming request \(request.method) \(request.path)")
+            Logger.v(self.logTag, "Incoming request \(request.method) \(request.path) from \(request.peerName.readable)")
             switch request.method {
             case .GET:
                 return self.getFile(request: request, responseHeaders: responseHeaders)
@@ -118,7 +118,7 @@ public class WebServer {
             case .DELETE:
                 return self.removeFile(request: request, responseHeaders: responseHeaders)
             default:
-                return .notFound
+                return .notFound()
             }
         }
     }

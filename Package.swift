@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "HttpFileStorage",
     dependencies: [
-        .package(url: "https://github.com/tomieq/swifter.git", .upToNextMajor(from: "1.5.5"))
+        .package(url: "https://github.com/tomieq/swifter.git", .upToNextMajor(from: "1.5.7"))
     ],
     targets: [
         .target(
