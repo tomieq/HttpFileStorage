@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -6,12 +6,14 @@ import PackageDescription
 let package = Package(
     name: "HttpFileStorage",
     dependencies: [
-        .package(url: "https://github.com/tomieq/swifter.git", .upToNextMajor(from: "1.5.7"))
+        .package(url: "https://github.com/tomieq/swifter.git", branch: "develop")
     ],
     targets: [
-        .target(
+        .executableTarget(
             name: "HttpFileStorage",
-            dependencies: ["Swifter"],
+            dependencies: [
+                .product(name: "Swifter", package: "Swifter")
+            ],
             path: "Sources")
     ]
 )

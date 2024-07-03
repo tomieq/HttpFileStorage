@@ -50,7 +50,7 @@ public class WebServer {
             let absoluteDir = pathComponents[0..<pathComponents.count - 1].joined(separator: "/")
             try? FileManager.default.createDirectory(atPath: absoluteDir, withIntermediateDirectories: true)
         }
-        if FileManager.default.createFile(atPath: path, contents: Data(request.body)) {
+        if FileManager.default.createFile(atPath: path, contents: request.body.data) {
             Logger.v(self.logTag, "Saved file \(filename) as \(path)")
             return .accepted()
         }
@@ -109,7 +109,7 @@ public class WebServer {
         // url: http://[server]:[port]/{filename}
 
         self.server.middleware.append { [unowned self] request, responseHeaders in
-            Logger.v(self.logTag, "Incoming request \(request.method) \(request.path) from \(request.peerName.readable)")
+            Logger.v(self.logTag, "Incoming request from \(request.peerName.readable) \(request.method) \(request.path)")
             switch request.method {
             case .GET:
                 return self.getFile(request: request, responseHeaders: responseHeaders)
