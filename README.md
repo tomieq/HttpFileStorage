@@ -28,3 +28,7 @@ if let url = URL(string: "http://[ip]:[port]/sample.txt") {
     }.resume()
 }
 ```
+### Start as container
+```
+docker-compose up --build
+```

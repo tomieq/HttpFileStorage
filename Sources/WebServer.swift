@@ -60,7 +60,7 @@ public class WebServer {
     private func getFile(request: HttpRequest, responseHeaders: HttpResponseHeaders) -> HttpResponse {
         request.disableKeepAlive = true
         guard let filename = getFilePath(request: request), !filename.isEmpty else {
-            return .badRequest(.text("Missing filename"))
+            return .notFound()
         }
         let filePath = self.workingDir + filename
         if FileManager.default.fileExists(atPath: filePath) {
