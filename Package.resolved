@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/tomieq/swifter.git",
       "state" : {
-        "branch" : "develop",
-        "revision" : "af38a0c45d76c85a82c1d813060ea7f023e47a20"
+        "revision" : "f80410f8ad1e47db4d126faf2447f7f9a7af4bc0",
+        "version" : "3.1.1"
       }
     }
   ],

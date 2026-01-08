@@ -1,0 +1,21 @@
+version: "3"
+networks:
+  home-network:
+    name: home-network
+volumes:
+  http-server-data:
+    name: "http-server-data"
+services:
+  http-server:
+    build:
+      context: $PWD
+      dockerfile: Dockerfile
+    container_name: http-file-server
+    restart: always
+    volumes:
+      - http-server-data:/local-storage:rw
+    networks:
+      - home-network
+    ports:
+      - "8089:80"
+

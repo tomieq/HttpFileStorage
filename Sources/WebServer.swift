@@ -24,7 +24,7 @@ public class WebServer {
     public func start(port: UInt16) {
         do {
             try self.server.start(port, forceIPv4: true)
-            Logger.v(self.logTag, "HttpServer has started on port = \(try self.server.port()), workDir = \(self.workingDir), allowSubdirs: \(self.allowSubdirs)")
+            Logger.v(self.logTag, "HttpServer has started on port = \(try self.server.port), workDir = \(self.workingDir), allowSubdirs: \(self.allowSubdirs)")
             dispatchMain()
         } catch {
             Logger.e(self.logTag, "HttpServer start error: \(error)")
@@ -41,7 +41,7 @@ public class WebServer {
 
     private func saveFile(request: HttpRequest, responseHeaders: HttpResponseHeaders) -> HttpResponse {
         request.disableKeepAlive = true
-        guard let filename = getFilePath(request: request) else {
+        guard let filename = getFilePath(request: request), !filename.isEmpty else {
             return .badRequest(.text("Missing filename"))
         }
         let path = self.workingDir + filename
@@ -59,7 +59,7 @@ public class WebServer {
 
     private func getFile(request: HttpRequest, responseHeaders: HttpResponseHeaders) -> HttpResponse {
         request.disableKeepAlive = true
-        guard let filename = getFilePath(request: request) else {
+        guard let filename = getFilePath(request: request), !filename.isEmpty else {
             return .badRequest(.text("Missing filename"))
         }
         let filePath = self.workingDir + filename
@@ -87,7 +87,7 @@ public class WebServer {
 
     private func removeFile(request: HttpRequest, responseHeaders: HttpResponseHeaders) -> HttpResponse {
         request.disableKeepAlive = true
-        guard let filename = getFilePath(request: request) else {
+        guard let filename = getFilePath(request: request), !filename.isEmpty else {
             return .badRequest(.text("Missing filename"))
         }
         let filePath = self.workingDir + filename
@@ -109,7 +109,7 @@ public class WebServer {
         // url: http://[server]:[port]/{filename}
 
         self.server.middleware.append { [unowned self] request, responseHeaders in
-            Logger.v(self.logTag, "Incoming request from \(request.peerName.readable) \(request.method) \(request.path)")
+            Logger.v(self.logTag, "Incoming request from \(request.clientIP.readable) \(request.method) \(request.path)")
             switch request.method {
             case .GET:
                 return self.getFile(request: request, responseHeaders: responseHeaders)

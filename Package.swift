@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "HttpFileStorage",
     dependencies: [
-        .package(url: "https://github.com/tomieq/swifter.git", branch: "develop")
+        .package(url: "https://github.com/tomieq/swifter.git", exact: "3.1.1")
     ],
     targets: [
         .executableTarget(

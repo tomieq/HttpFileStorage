@@ -2,7 +2,7 @@ import Foundation
 import Dispatch
 
 guard let workingDir = ArgumentParser.getValue(argument: "workingDir") else {
-    Logger.e("main", "Missing lunch param `workingDir` whick is absolute path")
+    Logger.e("main", "Missing lunch param `workingDir` which is absolute path")
     exit(1)
 }
 
